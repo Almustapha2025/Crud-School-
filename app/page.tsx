@@ -1,65 +1,79 @@
-import Image from "next/image";
+"use client"
+import { supabase } from "@/app/lib/supabase"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useState, FormEvent } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
-export default function Home() {
+interface Student{
+    id?: string,
+    fullname: string,
+    phone: string,
+    email: string
+}
+
+export default function page(){
+    const [students, setStudents] = useState<Student[]>([]);
+    const [form, setForm] = useState<Student>({
+        fullname: "",
+        phone: "",
+        email: ""
+    });
+
+    const [editid, setEditId] = useState<string | null>(null);
+
+    async function handleFormSubmit(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+        console.log(form)
+
+    const { error } = await supabase.from<Student>("students").insert([ form ])
+
+       if(error){
+        console.error(error)
+        toast.error("Error adding student")
+       } else {
+        toast.success("Student added successfully")
+       }
+        
+    }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+        <div className="mt-8 p-2">
+            <Toaster />
+            <div className="container mx-auto p-4 rounded-lg">
+                <div className="flex justify-between items-text-center w-full rounded-lg">
+                    <div className="m-4 w-[70%] rounded-lg p-4 border border-gray-100 shadow-md">
+                        <form onSubmit={ handleFormSubmit } className="w-full">
+                            <div className="my-4 w-full">
+                                <Input type="name" name="fullname" value={form.fullname}
+                                 onChange={(event) => setForm({...form, fullname: event.target.value})} 
+                                className="w-full py-2 px-4 border border-gray-100" placeholder="Full Name" />
+                            </div>
+                            <div className="my-4 w-full">
+                                <Input type="name" name="phone" value={form.phone}
+                                 onChange={(event) => setForm({...form, phone: event.target.value})} 
+                                className="w-full py-2 px-4 border border-gray-100" placeholder="Phone Number" />
+                            </div>
+                            <div className="my-4 w-full">
+                                <Input type="email" name="email" value={form.email}
+                                 onChange={(event) => setForm({...form, email: event.target.value})} 
+                                className="w-full py-2 px-4 border border-gray-100 " placeholder="Email Address" />
+                            </div>
+                            
+                            <div className="my-4 w-full">
+                                <Button type="submit" className="float-end rounded-lg font-bold bg-gray-700 text-white">Add Student</Button>
+                            </div>
+                        </form>
+                    </div>
+                    <div className="p-2 bg-white w-full">
+                        <form>
+                        
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+    </>
+  )
 }
