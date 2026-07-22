@@ -104,7 +104,7 @@ export default function page() {
     async function handleFormDelete(studentId: string) {
         const result = await Swal.fire({
             title: "Are you sure?",
-            text: "Did you rely wan't to delete this!",
+            text: "You wan't to delete this",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -133,7 +133,7 @@ export default function page() {
                 <Toaster />
                 <div className="container mx-auto p-4 rounded-lg">
                     <div className="flex justify-between items-text-center w-full rounded-lg md:flex-row flex-col">
-                        <div className="m-4 w-[50%] h-[70%] rounded-lg px-4 py-2 border border-gray-50 bg-white shadow-md">
+                        <div className="m-4 w-[50%] h-[70%] rounded-lg px-4 py-2 border border-gray-50 shadow-md">
                             <h3 className="text-lg font-bold mb-4">Add Student</h3>
                             <form onSubmit={handleFormSubmit} className="w-full">
                                 <div className="my-4 w-full">
@@ -160,8 +160,8 @@ export default function page() {
                             </form>
                         </div>
                         <div className="p-2 w-full">
-                            <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-md">
-                                <table className="min-w-full divide-y divide-gray-200">
+                            <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-md mt-2">
+                                <table className="min-w-full divide-y divide-gray-200 ">
                                     <thead className="bg-gray-100">
                                         <tr>
                                             <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
